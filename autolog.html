@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+
+    <script>
+        let lastTime = new Date().getTime();
+        const startTime = new Date().getTime();
+        let isActiveUser = true;
+        let timeoutID;
+        let timeleft = 0;
+        setup();
+
+        function setup() {
+            window.addEventListener('mousemove', resetTimer);
+            window.addEventListener('mousedown', resetTimer);
+            window.addEventListener('keypress', resetTimer);
+            window.addEventListener('DOMMouseScroll', resetTimer);
+            window.addEventListener('mousewheel', resetTimer);
+            window.addEventListener('touchmove', resetTimer);
+            window.addEventListener('MSPointerMove', resetTimer);
+            startTimer();
+        }
+
+        function startTimer() {
+            const timeOut = this.getGlobalTimeOut() * 500;
+
+            timeoutID = window.setTimeout(goInactive, timeOut);
+
+
+            setInterval(function () {
+                const currentTime = new Date().getTime();
+                const tem = (timeOut - (Date.now() - startTime));
+                this.timeleft = tem;
+                if (currentTime > (lastTime + 2000 + 2000)) {
+                    window.clearTimeout(timeoutID);
+                    timeoutID = window.setTimeout(goInactive, tem);
+                }
+                lastTime = currentTime;
+            }, 2000);
+        }
+
+        function resetTimer() {
+            window.clearTimeout(timeoutID);
+            goActive();
+        }
+
+
+        function goInactive() {
+            console.log('logout')
+        }
+        function goActive() {
+            startTimer();
+        }
+        function getGlobalTimeOut() {
+            return 10;
+        }
+    </script>
+</body>
+
+</html>
